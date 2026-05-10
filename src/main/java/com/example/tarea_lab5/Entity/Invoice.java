@@ -31,20 +31,17 @@ public class Invoice {
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private List<InvoiceDetail> details = new ArrayList<>();
 
-    public Double getTotal() {
 
+    public Double getTotal() {
         double total = 0;
 
         if(details != null) {
-
             for(InvoiceDetail d : details) {
-
                 if(d.getSubtotal() != null) {
                     total += d.getSubtotal();
                 }
             }
         }
-
         return total;
     }
 }

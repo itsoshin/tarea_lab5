@@ -4,68 +4,38 @@
     <title>Formulario Cliente</title>
 </head>
 <body>
-
 <div th:replace="Nabvar/fragmentoNav :: navbar"></div>
-
 <h1>Formulario Cliente</h1>
-
-<form th:object="${customer}"
-      th:action="@{/customer/save}"
-      method="post">
-
+<form th:object="${customer}" th:action="@{/customer/save}" method="post">
     <input type="hidden" th:field="*{id}">
-
     <div>
-
         <label>Nombre</label>
-
         <input type="text" th:field="*{name}">
-
-        <div th:if="${#fields.hasErrors('name')}"
-             th:errors="*{name}">
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
         </div>
-
     </div>
-
     <br>
-
     <div>
-
         <label>Tipo Documento</label>
-
         <select th:field="*{documentType}">
             <option value="">Seleccione</option>
             <option value="DNI">DNI</option>
             <option value="RUC">RUC</option>
         </select>
-
-        <div th:if="${#fields.hasErrors('documentType')}"
-             th:errors="*{documentType}">
+        <div th:if="${#fields.hasErrors('documentType')}" th:errors="*{documentType}">
         </div>
-
     </div>
-
     <br>
-
     <div>
-
         <label>Documento</label>
-
         <input type="text" th:field="*{document}">
-
-        <div th:if="${#fields.hasErrors('document')}"
-             th:errors="*{document}">
+        <div th:if="${#fields.hasErrors('document')}" th:errors="*{document}">
         </div>
-
     </div>
-
     <br>
-
     <button type="submit">
         Guardar
     </button>
-
 </form>
-
 </body>
 </html>

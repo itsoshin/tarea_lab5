@@ -30,4 +30,5 @@ public class InvoiceDetail {
 
     @Column(nullable = false)
     private Double subtotal;
+
 }

@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
@@ -20,60 +23,38 @@ public class ProductController {
 
     @GetMapping("")
     public String list(Model model) {
-
-        model.addAttribute(
-                "products",
-                productRepository.findAll()
-        );
-
+        model.addAttribute("products", productRepository.findAll());
         return "product/list";
     }
 
     @GetMapping("/new")
     public String create(Model model) {
-
-        model.addAttribute(
-                "product",
-                new Product()
-        );
+        model.addAttribute("product", new Product());
 
         return "product/form";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(
-            @PathVariable Integer id,
-            Model model
-    ) {
+    @GetMapping("/edit")
+    public String edit(@ModelAttribute("product") Product product, Model model, @RequestParam("id") int id) {
 
-        Product product = productRepository
-                .findById(id)
-                .orElseThrow();
-
-        model.addAttribute(
-                "product",
-                product
-        );
-
-        return "product/form";
+        Optional<Product> optProduct = productRepository.findById(id);
+        if (optProduct.isPresent()) {
+            product = optProduct.get();
+            model.addAttribute("product", product);
+            return "product/form";
+        } else {
+            return "redirect:/product";
+        }
     }
 
     @PostMapping("/save")
-    public String save(
-            @Valid @ModelAttribute Product product,
-            BindingResult bindingResult
-    ) {
-
-        Product existing = productRepository
-                .findByName(product.getName());
-
-        if(existing != null &&
-                !existing.getId().equals(product.getId())) {
-
+    public String save(@Valid @ModelAttribute Product product, BindingResult bindingResult) {
+        Product existing = productRepository.findByName(product.getName());
+        if(existing != null && !existing.getId().equals(product.getId())) {
             bindingResult.rejectValue(
                     "name",
                     "error.name",
-                    "Nombre duplicado"
+                    "Ya existe ese nombre de producto"
             );
         }
 
@@ -86,16 +67,14 @@ public class ProductController {
         return "redirect:/product";
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    @GetMapping("/delete")
+    public String delete(@RequestParam("id") int id, RedirectAttributes attr) {
 
         productRepository.deleteById(id);
+        attr.addFlashAttribute(
+                "msg",
+                "Producto eliminado");
 
         return "redirect:/product";
-    }
-
-    @ExceptionHandler(TypeMismatchException.class)
-    public String handleTypeMismatch() {
-        return "redirect:/product/new?error=number";
     }
 }
