@@ -4,17 +4,13 @@
     <title>Clientes</title>
 </head>
 <body>
-
 <div th:replace="Nabvar/fragmentoNav :: navbar"></div>
-
+<div th:if="${msg}" class="alert alert-warning">
+    <span th:text="${msg}"></span>
+</div>
 <h1>Clientes</h1>
-
-<a th:href="@{/customer/new}">
-    Nuevo cliente
-</a>
-
+<a th:href="@{/customer/new}">Nuevo cliente</a>
 <table border="1">
-
     <tr>
         <th>ID</th>
         <th>Nombre</th>
@@ -22,27 +18,16 @@
         <th>Documento</th>
         <th>Acciones</th>
     </tr>
-
     <tr th:each="c : ${customers}">
         <td th:text="${c.id}"></td>
         <td th:text="${c.name}"></td>
         <td th:text="${c.documentType}"></td>
         <td th:text="${c.document}"></td>
-
         <td>
-
-            <a th:href="@{/customer/edit/{id}(id=${c.id})}">
-                Editar
-            </a>
-
-            <a th:href="@{/customer/delete/{id}(id=${c.id})}">
-                Eliminar
-            </a>
-
+            <a th:href="@{/customer/edit(id=${c.id})}">Editar</a>
+            <a th:href="@{/customer/delete(id=${c.id})}">Eliminar</a>
         </td>
     </tr>
-
 </table>
-
 </body>
 </html>
