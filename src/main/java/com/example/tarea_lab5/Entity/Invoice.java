@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,6 +28,23 @@ public class Invoice {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<InvoiceDetail> details;
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
+    private List<InvoiceDetail> details = new ArrayList<>();
+
+    public Double getTotal() {
+
+        double total = 0;
+
+        if(details != null) {
+
+            for(InvoiceDetail d : details) {
+
+                if(d.getSubtotal() != null) {
+                    total += d.getSubtotal();
+                }
+            }
+        }
+
+        return total;
+    }
 }

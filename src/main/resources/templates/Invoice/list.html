@@ -9,5 +9,34 @@
 
 <h1>Comprobantes</h1>
 
+<a th:href="@{/invoice/new}">
+    Nuevo comprobante
+</a>
+
+<table border="1">
+
+    <tr>
+        <th>ID</th>
+        <th>Tipo</th>
+        <th>Fecha</th>
+        <th>Cliente</th>
+        <th>Total</th>
+    </tr>
+
+    <tr th:each="i : ${invoices}">
+
+        <td th:text="${i.id}"></td>
+
+        <td th:text="${i.type}"></td>
+
+        <td th:text="${i.date}"></td>
+
+        <td th:text="${i.customer.name}"></td>
+        <td th:text="${i.total}"></td>
+
+    </tr>
+
+</table>
+
 </body>
 </html>
