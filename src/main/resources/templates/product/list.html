@@ -9,5 +9,45 @@
 
 <h1>Productos</h1>
 
+<a th:href="@{/product/new}">
+    Nuevo producto
+</a>
+
+<table border="1">
+
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Acciones</th>
+    </tr>
+
+    <tr th:each="p : ${products}">
+
+        <td th:text="${p.id}"></td>
+
+        <td th:text="${p.name}"></td>
+
+        <td th:text="${p.price}"></td>
+
+        <td th:text="${p.stock}"></td>
+
+        <td>
+
+            <a th:href="@{/product/edit/{id}(id=${p.id})}">
+                Editar
+            </a>
+
+            <a th:href="@{/product/delete/{id}(id=${p.id})}">
+                Eliminar
+            </a>
+
+        </td>
+
+    </tr>
+
+</table>
+
 </body>
 </html>
